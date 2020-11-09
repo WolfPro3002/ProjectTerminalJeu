@@ -10,7 +10,7 @@ class Game:
         # Commencement jeu :
         self.is_playing = False
         # Joueur :
-        self.all_player = pygame.sprite.Group
+        self.all_player = pygame.sprite.Group()
         self.player = Player(self)
         self.all_player.add(self.player)
         # Monsters :
@@ -65,5 +65,5 @@ class Game:
 
     # Création du spawn des monstres :
     def spawn_monster(self):
-        monster = Monster()
+        monster = Monster(self)
         self.all_monster.add(monster)
