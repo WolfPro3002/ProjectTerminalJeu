@@ -12,20 +12,30 @@ class Player(pygame.sprite.Sprite):
         self.attack = 10
         self.velocity = 2
         self.marche = mixer.Sound('Asset/Bruitages/marcheParquet.wav')
-        self.image = pygame.image.load('Asset/AidenLoaw1.xcf').convert_alpha()
+        self.image = pygame.image.load('Asset/AidenLoaw1.png').convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.x = 540
         self.rect.y = 300
-        
+
+    # Instantiation des obstacles objets :
     def rect_obstacles(self):
         return [{'x':self.game.all_objects.sprites()[i].rect.x, 'y':self.game.all_objects.sprites()[i].rect.y, 'width':self.game.all_objects.sprites()[i].rect.width, 'height':self.game.all_objects.sprites()[i].rect.height} for i in range(len(self.game.all_objects))]
 
+    # Instantiation de l'obstacle monstre :
+    def rect_monstre(self):
+        return [{'x':self.game.all_monster.sprites()[i].rect.x, 'y':self.game.all_monster.sprites()[i].rect.y, 'width':self.game.all_monster.sprites()[i].rect.width, 'height':self.game.all_monster.sprites()[i].rect.height} for i in range(len(self.game.all_monster))]
+
+
     # Méthode qui permet de faire bouger le joueur a droite :
     def moveRigth(self):
-        # Si le joueur est en collision avec le cercueille :
         deplacement = True
+        # Si le joueur est en collision avec le cercueille :
         for obstacle in self.rect_obstacles():
             if not (self.rect.y >= obstacle['y']+obstacle['height'] or self.rect.y+self.rect.height <= obstacle['y'] or self.rect.x+self.rect.width <= obstacle['x'] or self.rect.x >= obstacle['x']+obstacle['width']-self.velocity):
+                deplacement = False
+        # Si le joueur est en collision avec le monstre :
+        for monster in self.rect_monstre():
+            if not (self.rect.y >= monster['y'] + monster['height'] + self.velocity or self.rect.y + self.rect.height <= monster['y'] or self.rect.x + self.rect.width <= monster['x'] or self.rect.x >= monster['x'] +monster['width']):
                 deplacement = False
         if deplacement:
             self.rect.x += self.velocity
@@ -33,10 +43,14 @@ class Player(pygame.sprite.Sprite):
 
     # Méthode qui permet de faire bouger le joueur a gauche :
     def moveLef(self):
-        # Si le joueur est en collision avec le cercueille :
         deplacement = True
+        # Si le joueur est en collision avec le cercueille :
         for obstacle in self.rect_obstacles():
             if not (self.rect.y >= obstacle['y']+obstacle['height'] or self.rect.y+self.rect.height <= obstacle['y'] or self.rect.x+self.rect.width <= obstacle['x']+self.velocity or self.rect.x >= obstacle['x']+obstacle['width']):
+                deplacement = False
+        # Si le joueur est en collision avec le monstre :
+        for monster in self.rect_monstre():
+            if not (self.rect.y >= monster['y'] + monster['height'] + self.velocity or self.rect.y + self.rect.height <= monster['y'] or self.rect.x + self.rect.width <= monster['x'] or self.rect.x >= monster['x'] + monster['width']):
                 deplacement = False
         if deplacement:
             self.rect.x -= self.velocity
@@ -44,10 +58,14 @@ class Player(pygame.sprite.Sprite):
 
     # Méthode qui permet de faire bouger le joueur en haut :
     def moveUp(self):
-        # Si le joueur est en collision avec le cercueille :
         deplacement = True
+        # Si le joueur est en collision avec le cercueille :
         for obstacle in self.rect_obstacles():
             if not (self.rect.y >= obstacle['y'] + obstacle['height'] + self.velocity or self.rect.y + self.rect.height <= obstacle['y'] or self.rect.x + self.rect.width <= obstacle['x'] or self.rect.x >= obstacle['x'] + obstacle['width']):
+                deplacement = False
+        # Si le joueur est en collision avec le monstre :
+        for monster in self.rect_monstre():
+            if not (self.rect.y >= monster['y'] + monster['height'] + self.velocity or self.rect.y + self.rect.height <= monster['y'] or self.rect.x + self.rect.width <= monster['x'] or self.rect.x >= monster['x'] + monster['width']):
                 deplacement = False
         if deplacement:
             self.rect.y -= self.velocity
@@ -55,10 +73,14 @@ class Player(pygame.sprite.Sprite):
 
     # Méthode qui permet de faire bouger le joueur en bas:
     def moveDown(self):
-        # Si le joueur est en collision avec le cercueille :
         deplacement = True
+        # Si le joueur est en collision avec le cercueille :
         for obstacle in self.rect_obstacles():
             if not (self.rect.y >= obstacle['y'] + obstacle['height'] or self.rect.y + self.rect.height <= obstacle['y'] - self.velocity or self.rect.x + self.rect.width <= obstacle['x'] or self.rect.x >= obstacle['x'] + obstacle['width']):
+                deplacement = False
+        # Si le joueur est en collision avec le monstre :
+        for monster in self.rect_monstre():
+            if not (self.rect.y >= monster['y'] + monster['height'] + self.velocity or self.rect.y + self.rect.height <= monster['y'] or self.rect.x + self.rect.width <= monster['x'] or self.rect.x >= monster['x'] +monster['width']):
                 deplacement = False
         if deplacement:
             self.rect.y += self.velocity
