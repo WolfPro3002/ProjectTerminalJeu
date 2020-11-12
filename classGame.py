@@ -23,6 +23,10 @@ class Game:
 
     # Chargement du jeu quand elle est lancer :
     def uptdate(self, screen):
+        # Icone jeu :
+        icon_32x32 = pygame.image.load('Asset/IconeJeu.png')
+        pygame.display.set_icon(icon_32x32)
+
         # Charger le joueur :
         screen.blit(self.player.image, self.player.rect)
         self.player.update_health_bar(screen)
