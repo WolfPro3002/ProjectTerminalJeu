@@ -34,7 +34,7 @@ class Monster(pygame.sprite.Sprite):
         pygame.draw.rect(surface, back_bar_color, back_bar_position)
         pygame.draw.rect(surface, bar_color, bar_position)
 
-    # Instanciation de l'obstacle joueur :
+    # Instanciation de l'obstacle joueur :è
     def rect_obstacles(self):
         return [{'x':self.game.all_player.sprites()[i].rect.x, 'y':self.game.all_player.sprites()[i].rect.y, 'width':self.game.all_player.sprites()[i].rect.width, 'height':self.game.all_player.sprites()[i].rect.height} for i in range(len(self.game.all_player))]
 
