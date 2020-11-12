@@ -39,6 +39,7 @@ class Player(pygame.sprite.Sprite):
                 deplacement = False
         if deplacement:
             self.rect.x += self.velocity
+            self.image = pygame.image.load('Asset/Aiden de coter droit.png')
             self.marche.play()
 
     # Méthode qui permet de faire bouger le joueur a gauche :
@@ -54,6 +55,7 @@ class Player(pygame.sprite.Sprite):
                 deplacement = False
         if deplacement:
             self.rect.x -= self.velocity
+            self.image = pygame.image.load('Asset/Aiden de coter gauche.png')
             self.marche.play()
 
     # Méthode qui permet de faire bouger le joueur en haut :
@@ -84,6 +86,7 @@ class Player(pygame.sprite.Sprite):
                 deplacement = False
         if deplacement:
             self.rect.y += self.velocity
+            self.image = pygame.image.load('Asset/AidenLoaw1.png')
             self.marche.play()
 
         # Création d'une méthode qui permet d'afficher la barre de vie du joueur :
