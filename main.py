@@ -7,6 +7,10 @@ from pygame import mixer
 
 pygame.init()
 
+# Icone jeu :
+icon_32x32 = pygame.image.load('Asset/IconeJeu.png')
+pygame.display.set_icon(icon_32x32)
+
 # Ouverture de la fenêtre du jeu :
 pygame.display.set_caption('Projet jeu terminal')
 screen = pygame.display.set_mode((1080, 756))
@@ -20,7 +24,7 @@ mixer.music.load('Asset/Bruitages/music accueille.mp3')
 mixer.music.play(-1)
 
 # Modification bannierre pour l'accueille :
-banner = pygame.image.load('Asset/BannierreJeu.xcf').convert_alpha()
+banner = pygame.image.load('Asset/BannierreJeu.png').convert_alpha()
 banner = pygame.transform.scale(banner, (300, 300))
 banner_rect = banner.get_rect()
 banner_rect.x = math.ceil(screen.get_width() / 2.90)
