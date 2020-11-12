@@ -2,6 +2,7 @@ import pygame
 from classPlayer import *
 from classCercueille import *
 from classMonster import *
+from classTorche import *
 
 # Création d'une classe Game :
 class Game:
@@ -18,7 +19,15 @@ class Game:
         # Objets piece :
         self.all_objects = pygame.sprite.Group()
         self.pressed = {}
-        self.spawn_cercueille()
+        self.spawn_cercueille(540, 378)
+        # Torche du haut :
+        self.spawn_torche(540, 0)
+        # Torche du bas :
+        self.spawn_torche(540, 700)
+        # Torche de droite :
+        self.spawn_torche(0, 378)
+        # Torche de gauche :
+        self.spawn_torche(1030, 378)
         self.spawn_monster()
 
     # Chargement du jeu quand elle est lancer :
@@ -62,10 +71,15 @@ class Game:
         return pygame.sprite.spritecollide(sprite, group, False)
 
     # Création du cercueille :
-    def spawn_cercueille(self):
+    def spawn_cercueille(self, x, y):
         # Apparition cercueille :
-        cercueille = Cercueille()
+        cercueille = Cercueille(x, y)
         self.all_objects.add(cercueille)
+
+    # Création de la torche :
+    def spawn_torche(self, x, y):
+        torche = Torche(x, y)
+        self.all_objects.add(torche)
 
     # Création du spawn des monstres :
     def spawn_monster(self):
