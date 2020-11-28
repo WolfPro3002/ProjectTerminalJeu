@@ -1,5 +1,6 @@
 import pygame
 from pygame import mixer
+from classProjectile import Projectile
 
 # Création de la classe Player :
 class Player(pygame.sprite.Sprite):
@@ -7,15 +8,32 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, game):
         super().__init__()
         self.game = game
+        self.all_projectiles = pygame.sprite.Group()
         self._health = 100
         self._maxHealth = 100
         self.attack = 10
         self.velocity = 2
+        self.lancement_projectile = mixer.Sound('Asset/Bruitages/coup.wav')
         self.marche = mixer.Sound('Asset/Bruitages/marcheParquet.wav')
         self.image = pygame.image.load('Asset/AidenLoaw1.png').convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.x = 540
         self.rect.y = 300
+
+    # Méthode qui permet de lancer le projectile :
+    def launch_projectile(self):
+        self.all_projectiles.add(Projectile(self))
+        self.lancement_projectile.play()
+        self.lancement_projectile.set_volume(0.3)
+
+    # Création dégats du joueur :
+    def damage(self, amount):
+        # Infliger les dégats:
+        if self._health - amount > amount:
+            self._health -= amount
+        else:
+            # Si le joueur n'a plus de vie :
+            self.game.game_over()
 
     # Instantiation des obstacles objets :
     def rect_obstacles(self):
@@ -25,7 +43,6 @@ class Player(pygame.sprite.Sprite):
     def rect_monstre(self):
         return [{'x':self.game.all_monster.sprites()[i].rect.x, 'y':self.game.all_monster.sprites()[i].rect.y, 'width':self.game.all_monster.sprites()[i].rect.width, 'height':self.game.all_monster.sprites()[i].rect.height} for i in range(len(self.game.all_monster))]
 
-
     # Méthode qui permet de faire bouger le joueur a droite :
     def moveRigth(self):
         deplacement = True
@@ -33,10 +50,12 @@ class Player(pygame.sprite.Sprite):
         for obstacle in self.rect_obstacles():
             if not (self.rect.y >= obstacle['y']+obstacle['height'] or self.rect.y+self.rect.height <= obstacle['y'] or self.rect.x+self.rect.width <= obstacle['x'] or self.rect.x >= obstacle['x']+obstacle['width']-self.velocity):
                 deplacement = False
+
         # Si le joueur est en collision avec le monstre :
         for monster in self.rect_monstre():
             if not (self.rect.y >= monster['y'] + monster['height'] + self.velocity or self.rect.y + self.rect.height <= monster['y'] or self.rect.x + self.rect.width <= monster['x'] or self.rect.x >= monster['x'] +monster['width']):
                 deplacement = False
+
         if deplacement:
             self.rect.x += self.velocity
             self.image = pygame.image.load('Asset/Aiden de coter droit.png')
@@ -49,10 +68,12 @@ class Player(pygame.sprite.Sprite):
         for obstacle in self.rect_obstacles():
             if not (self.rect.y >= obstacle['y']+obstacle['height'] or self.rect.y+self.rect.height <= obstacle['y'] or self.rect.x+self.rect.width <= obstacle['x']+self.velocity or self.rect.x >= obstacle['x']+obstacle['width']):
                 deplacement = False
+
         # Si le joueur est en collision avec le monstre :
         for monster in self.rect_monstre():
             if not (self.rect.y >= monster['y'] + monster['height'] + self.velocity or self.rect.y + self.rect.height <= monster['y'] or self.rect.x + self.rect.width <= monster['x'] or self.rect.x >= monster['x'] + monster['width']):
                 deplacement = False
+
         if deplacement:
             self.rect.x -= self.velocity
             self.image = pygame.image.load('Asset/Aiden de coter gauche.png')
@@ -65,12 +86,15 @@ class Player(pygame.sprite.Sprite):
         for obstacle in self.rect_obstacles():
             if not (self.rect.y >= obstacle['y'] + obstacle['height'] + self.velocity or self.rect.y + self.rect.height <= obstacle['y'] or self.rect.x + self.rect.width <= obstacle['x'] or self.rect.x >= obstacle['x'] + obstacle['width']):
                 deplacement = False
+
         # Si le joueur est en collision avec le monstre :
         for monster in self.rect_monstre():
             if not (self.rect.y >= monster['y'] + monster['height'] + self.velocity or self.rect.y + self.rect.height <= monster['y'] or self.rect.x + self.rect.width <= monster['x'] or self.rect.x >= monster['x'] + monster['width']):
                 deplacement = False
+
         if deplacement:
             self.rect.y -= self.velocity
+            self.image = pygame.image.load('Asset/Aiden dos.png')
             self.marche.play()
 
     # Méthode qui permet de faire bouger le joueur en bas:
@@ -80,10 +104,12 @@ class Player(pygame.sprite.Sprite):
         for obstacle in self.rect_obstacles():
             if not (self.rect.y >= obstacle['y'] + obstacle['height'] or self.rect.y + self.rect.height <= obstacle['y'] - self.velocity or self.rect.x + self.rect.width <= obstacle['x'] or self.rect.x >= obstacle['x'] + obstacle['width']):
                 deplacement = False
+
         # Si le joueur est en collision avec le monstre :
         for monster in self.rect_monstre():
             if not (self.rect.y >= monster['y'] + monster['height'] + self.velocity or self.rect.y + self.rect.height <= monster['y'] or self.rect.x + self.rect.width <= monster['x'] or self.rect.x >= monster['x'] +monster['width']):
                 deplacement = False
+
         if deplacement:
             self.rect.y += self.velocity
             self.image = pygame.image.load('Asset/AidenLoaw1.png')
