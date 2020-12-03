@@ -1,4 +1,5 @@
 import pygame
+from random import randint
 from pygame import mixer
 
 # Création de la classe monstre :
@@ -10,7 +11,7 @@ class Monster(pygame.sprite.Sprite):
         self.health = 100
         self.max_health = 100
         self.attack = 1
-        self.velocity = 2
+        self.velocity = 1
         self.bruitage_mort_monstre = mixer.Sound('Asset/Bruitages/mort du monstre.mp3')
         self.image = pygame.image.load('Asset/Pers_Face_Static1.png')
         self.rect = self.image.get_rect()
@@ -61,7 +62,14 @@ class Monster(pygame.sprite.Sprite):
                 deplacement = False
 
         if deplacement:
-            self.rect.x -= self.velocity
+            if self.rect.x > self.game.player.rect.x:
+                self.rect.x -= self.velocity
+            elif self.rect.x < self.game.player.rect.x:
+                self.rect.x += self.velocity
+            elif self.rect.y > self.game.player.rect.y:
+                self.rect.y -= self.velocity
+            elif self.rect.y < self.game.player.rect.y:
+                self.rect.y += self.velocity
 
         # Dégats monstre au joueur :
         for monster in self.game.check_collision(self, self.game.all_player):
