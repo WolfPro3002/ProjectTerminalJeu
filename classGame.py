@@ -28,7 +28,7 @@ class Game:
         self.play_button_rect.y = 250
         self.pressed = {}
 
-    # Spawn des objets :
+    # Spawn des objets quand le jeu est lancé :
     def start(self):
         self.spawn_cercueille(540, 378)
         # Torche du haut :
